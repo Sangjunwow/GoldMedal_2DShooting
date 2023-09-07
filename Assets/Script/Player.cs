@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public int life;
+    public int score;
     public bool isTouchTop;
     public bool isTouchBottom;
     public bool isTouchRight;
@@ -18,6 +20,8 @@ public class Player : MonoBehaviour
 
     public GameObject bulletObjA;
     public GameObject bulletObjB;
+
+    public GameManager manager;
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -66,6 +70,21 @@ public class Player : MonoBehaviour
                     isTouchLeft = true;
                     break;
             }
+        }
+        else if (collision.gameObject.tag == "Enemy"|| collision.gameObject.tag == "EnemyBullet")
+        {
+            life--;
+            manager.updateLifeIcon(life);
+            if(life == 0)
+            {
+                manager.GameOver();
+            }
+            else
+            {
+                manager.RespawnPlayer();     
+            }
+            gameObject.SetActive(false);
+            Destroy(collision.gameObject);
         }
     }
     void FIre()
