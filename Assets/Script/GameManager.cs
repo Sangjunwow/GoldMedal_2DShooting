@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     public float curSpawnDelay;
 
     public GameObject player;
-    public TextMeshPro scoreText;
+    public TextMeshProUGUI scoreText;
     public Image[] lifeImage;
     public GameObject gameOverSet;
 
@@ -70,6 +71,8 @@ public class GameManager : MonoBehaviour
     {
         player.transform.position = Vector3.down * 3.5f;
         player.SetActive(true);
+        Player playerLogic = player.GetComponent<Player>();
+        playerLogic.isHit = false;
     }
 
     public void updateLifeIcon(int life)
@@ -88,5 +91,9 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         gameOverSet.SetActive(true);
+    }
+    public void GameRetry()
+    {
+        SceneManager.LoadScene(0);
     }
 }

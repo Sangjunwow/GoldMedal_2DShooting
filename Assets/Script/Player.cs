@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public int life;
     public int score;
+
     public bool isTouchTop;
     public bool isTouchBottom;
     public bool isTouchRight;
@@ -14,14 +15,16 @@ public class Player : MonoBehaviour
     Animator anim;
 
     public float speed;
-    public float power;
+    public int power;
+    public int maxPower;
     public float maxShotDelay;
     public float curShotDelay;
 
     public GameObject bulletObjA;
     public GameObject bulletObjB;
-
+    public GameObject boomEffect;
     public GameManager manager;
+    public bool isHit;
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -71,20 +74,54 @@ public class Player : MonoBehaviour
                     break;
             }
         }
-        else if (collision.gameObject.tag == "Enemy"|| collision.gameObject.tag == "EnemyBullet")
+        else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
         {
+            if (isHit)
+                return;
+            isHit = true;
             life--;
             manager.updateLifeIcon(life);
-            if(life == 0)
+            if (life == 0)
             {
                 manager.GameOver();
             }
             else
             {
-                manager.RespawnPlayer();     
+                manager.RespawnPlayer();
             }
             gameObject.SetActive(false);
             Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "Item")
+        {
+            Item item = collision.gameObject.GetComponent<Item>();
+            switch (item.type)
+            {
+                case "Coin":
+                    score += 1000;
+                    break;
+                case "Power":
+                    if (power == maxPower)
+                        score += 500;
+                    else
+                        power++;
+                    break;
+                case "Boom":
+                    boomEffect.SetActive(true);
+                    GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                    for (int index = 0; index < enemies.Length; index++)
+                    {
+                        Enemy enemyLogic = enemies[index].GetComponent<Enemy>();
+                     //   enemyLogic.OnHit(1000);
+                    }
+                    GameObject[] bullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
+                    for (int index = 0; index < enemies.Length; index++)
+                    {             
+                            Destroy(bullets[index]);
+                    }
+                    break;
+
+            }
         }
     }
     void FIre()
