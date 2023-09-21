@@ -108,11 +108,12 @@ public class Player : MonoBehaviour
                     break;
                 case "Boom":
                     boomEffect.SetActive(true);
+                    Invoke("OffBoomEffect", 4f);
                     GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
                     for (int index = 0; index < enemies.Length; index++)
                     {
                         Enemy enemyLogic = enemies[index].GetComponent<Enemy>();
-                     //   enemyLogic.OnHit(1000);
+                     enemyLogic.OnHit(1000);
                     }
                     GameObject[] bullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
                     for (int index = 0; index < enemies.Length; index++)
@@ -122,7 +123,12 @@ public class Player : MonoBehaviour
                     break;
 
             }
+            Destroy(collision.gameObject);
         }
+    }
+    void OffBoomEffect()
+        { 
+        boomEffect.SetActive (false);
     }
     void FIre()
     {

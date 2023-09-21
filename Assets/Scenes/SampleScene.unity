@@ -1223,8 +1223,8 @@ MonoBehaviour:
   isTouchRight: 0
   isTouchLeft: 0
   speed: 5
-  power: 0
-  maxPower: 0
+  power: 1
+  maxPower: 3
   maxShotDelay: 0.2
   curShotDelay: 0
   bulletObjA: {fileID: 7630370257187589858, guid: 9240f914eadefc244912305f5e12b8c5, type: 3}
@@ -3149,7 +3149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1821408801
 Animator:
   serializedVersion: 5
